@@ -91,7 +91,8 @@ GetOptions(
     'pass=s',         'skipsize',     'checkversion', 'mysqladmin=s',
     'mysqlcmd=s',     'help',         'buffers',      'skippassword',
     'passwordfile=s', 'outputfile=s', 'silent',       'dbstat', 'json',
-    'idxstat', 'noask', 'template=s', 'reportfile=s', 'cvefile=s',
+    'idxstat', 'noask', 'template=s', 'reportfile=s', 'cvefile=s', 
+    'lp=s',
 );
 
 if ( defined $opt{'help'} && $opt{'help'} == 1 ) { usage(); }
@@ -115,6 +116,7 @@ sub usage {
       . "      --port <port>        Port to use for connection (default: 3306)\n"
       . "      --user <username>    Username to use for authentication\n"
       . "      --pass <password>    Password to use for authentication\n"
+      . "      --lp <login-path>    Login path use for authentication\n"
       . "      --mysqladmin <path>  Path to a custom mysqladmin executable\n"
       . "      --mysqlcmd <path>    Path to a custom mysql executable\n" . "\n"
       . "      --noask              Dont ask password if needed\n" . "\n"
@@ -588,6 +590,22 @@ sub mysql_setup {
             exit 1;
         }
     }
+    elsif ( defined $opt{lp} ) {
+
+			# login-path used
+    	$mysqllogin = "--login-path=$opt{lp}" . $remotestring;
+      my $loginstatus = `$mysqladmincmd $mysqllogin ping 2>&1`;
+      if ( $loginstatus =~ /mysqld is alive/ ) {
+          goodprint
+            "Logged in using login-path";
+          return 1;
+      }
+      else {
+          badprint
+            "Attempted to use login-path, but it was invalid";
+          exit 1;
+      }
+		}
     else {
 
         # It's not Plesk or debian, we should try a login
