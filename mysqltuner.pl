@@ -116,7 +116,7 @@ sub usage {
       . "      --port <port>        Port to use for connection (default: 3306)\n"
       . "      --user <username>    Username to use for authentication\n"
       . "      --pass <password>    Password to use for authentication\n"
-      . "      --lp <login-path>    Login path use for authentication\n"
+      . "      --lp <login-path>    Login path to use for authentication\n"
       . "      --mysqladmin <path>  Path to a custom mysqladmin executable\n"
       . "      --mysqlcmd <path>    Path to a custom mysql executable\n" . "\n"
       . "      --noask              Dont ask password if needed\n" . "\n"
